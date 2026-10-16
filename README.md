@@ -20,10 +20,10 @@
 
 ### 从 GitHub 安装
 
-将 `<OWNER>` 替换为实际 GitHub 用户名或组织名，**不要保留尖括号或照抄占位符**：
+从本插件的公开仓库安装：
 
 ```bash
-dsh plugin --profile desktop add github:<OWNER>/dsh_session_recyclebin
+dsh plugin --profile desktop add github:lmwzd/dsh_session_recyclebin
 ```
 
 仓库根目录应直接包含插件包内容。此安装方式无需先发布到 npm。更新时重新执行安装命令并重启 DSH。
@@ -44,10 +44,10 @@ dsh plugin --profile desktop add link:D:/Agent/Work/PersPlugin/SessionDelete
 
 ```bash
 dsh plugin --profile desktop remove dsh-session-delete
-dsh plugin --profile desktop add github:<OWNER>/dsh_session_recyclebin
+dsh plugin --profile desktop add github:lmwzd/dsh_session_recyclebin
 ```
 
-同样需要替换 `<OWNER>`。本地安装也遵循先卸载旧包、再安装新包的顺序。迁移时保留 `<DSH_HOME>/session-delete/` 中的回收站数据，不要手动删除该目录；新名称继续使用它，已有回收站记录得以保留。
+本地安装也遵循先卸载旧包、再安装新包的顺序。迁移时保留 `<DSH_HOME>/session-delete/` 中的回收站数据，不要手动删除该目录；新名称继续使用它，已有回收站记录得以保留。
 
 ### Loader 条目
 

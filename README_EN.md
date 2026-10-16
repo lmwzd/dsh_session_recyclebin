@@ -20,10 +20,10 @@ These commands use the `desktop` profile; replace it if you use another profile.
 
 ### Install from GitHub
 
-Replace `<OWNER>` with the actual GitHub username or organization. **Do not keep the angle brackets or use the placeholder literally.**
+Install from this plugin's public repository:
 
 ```bash
-dsh plugin --profile desktop add github:<OWNER>/dsh_session_recyclebin
+dsh plugin --profile desktop add github:lmwzd/dsh_session_recyclebin
 ```
 
 The repository root must contain the plugin package directly. This installation method does not require publishing to npm. To update, run the installation command again and restart DSH.
@@ -44,10 +44,10 @@ Remove the old package before installing the new one to avoid loading both versi
 
 ```bash
 dsh plugin --profile desktop remove dsh-session-delete
-dsh plugin --profile desktop add github:<OWNER>/dsh_session_recyclebin
+dsh plugin --profile desktop add github:lmwzd/dsh_session_recyclebin
 ```
 
-Replace `<OWNER>` as described above. For local installation, follow the same remove-old-then-install-new order. Preserve the recycle-bin data in `<DSH_HOME>/session-delete/`; do not manually delete that directory. The renamed package continues to use it, retaining existing recycle-bin records.
+For local installation, follow the same remove-old-then-install-new order. Preserve the recycle-bin data in `<DSH_HOME>/session-delete/`; do not manually delete that directory. The renamed package continues to use it, retaining existing recycle-bin records.
 
 ### Loader entries
 
