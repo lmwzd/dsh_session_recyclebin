@@ -1,0 +1,10 @@
+# dsh_session_recyclebin: main delete entry and optional recycle bin.
+# Disable the second entry in plugin management to delete permanently instead.
+# Existing enabled mounts of the same entry take precedence.
+- insert:
+    - id: dsh_session_recyclebin
+      name: 'dsh_session_recyclebin'
+      disabled: !!js "[...ctx.loader.entries()].some((e) => e.options.name === 'dsh_session_recyclebin' && e.options.id !== 'dsh_session_recyclebin' && !e.disabled)"
+    - id: dsh_session_recyclebin-trash
+      name: 'dsh_session_recyclebin/trash'
+      disabled: !!js "[...ctx.loader.entries()].some((e) => e.options.name === 'dsh_session_recyclebin/trash' && e.options.id !== 'dsh_session_recyclebin-trash' && !e.disabled)"
