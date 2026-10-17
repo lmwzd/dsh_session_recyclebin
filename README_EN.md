@@ -2,7 +2,7 @@
 
 English | [简体中文](README.md)
 
-Adds **Delete Session** to DSH's sidebar session menu and provides a recoverable recycle bin. Supports **DSH 0.2.0-rc.2** and requires **Node.js >= 20**.
+Adds **Delete Session** to DSH's sidebar session menu and provides a recoverable recycle bin. Plugin **0.2.1** targets **DSH runtime 0.2.1-rc.1** (checked against the packages shipped with Desktop 44.7.0) and requires **Node.js >= 20**.
 
 ## Features and deletion behavior
 

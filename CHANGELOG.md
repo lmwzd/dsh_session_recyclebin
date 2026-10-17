@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1
+
+- Target DSH runtime `0.2.1-rc.1` and Cordis `4.0.5`, as shipped with Desktop 44.7.0.
+- Replace the obsolete runtime dependency on `dsh-client-ui-slots` with its shipped owner, `dsh-client-ui-renderer`.
+- Declare client activation dependencies on the renderer, locale service and Session Controller so deletion filtering starts after the actual list owner.
+- Align host peer dependencies with the persistence, query and workspace services the plugin uses.
+- Add manifest compatibility checks and retain the existing recycle-bin data format.
+
 ## 0.2.0
 
 - Rename the package and client module to `dsh_session_recyclebin`.

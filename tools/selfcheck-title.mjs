@@ -100,10 +100,15 @@ console.log('[2] resolveSessionTitle prefers the log fold')
   check('title resolves without a cwd', title === 'A name', title)
 }
 
+// DSH 0.2.1 keeps all physical format generations in the session directory.
+// Relocation must preserve every generation without decoding or rewriting it.
 console.log('[3] moveToTrash parks the log so the sidebar stops listing it')
 {
   const { store, dispose } = await freshStore()
   const p = await freshPersistence({ sessionId: 'session-x' })
+  const { writeFile, readFile } = await import('node:fs/promises')
+  const generations = ['v0.jsonl.zstd', 'v1.jsonl.zstd', 'v2.jsonl.zstd']
+  for (const file of generations) await writeFile(join(p.logPath, file), `opaque-${file}`)
   try {
     const workspace = { id: 'w1', path: 'D:\\Agent\\Work', sessionIds: ['session-x'] }
     workspace.detachSession = async () => {
@@ -140,6 +145,9 @@ console.log('[3] moveToTrash parks the log so the sidebar stops listing it')
     const { pathExists } = await import('../lib/shared.js')
     check('the log is gone from the persistence root', !(await pathExists(p.logPath)))
     check('the log is parked under the trash', await pathExists(entry.parkedLogPath))
+    for (const file of generations) {
+      check(`move preserves ${file}`, await readFile(join(entry.parkedLogPath, file), 'utf8') === `opaque-${file}`)
+    }
     check('the session is off every workspace account', !workspace.sessionIds.includes('session-x'), workspace.sessionIds.join(','))
     check('the archive mark is kept', registry.archivedSessionIds.includes('session-x'))
 
@@ -152,6 +160,9 @@ console.log('[3] moveToTrash parks the log so the sidebar stops listing it')
     })
     check('restore returns the entry', restored.sessionId === 'session-x')
     check('restore puts the log back', await pathExists(p.logPath))
+    for (const file of generations) {
+      check(`restore preserves ${file}`, await readFile(join(p.logPath, file), 'utf8') === `opaque-${file}`)
+    }
     check('restore empties the parked slot', !(await pathExists(entry.parkedLogPath)))
     check('restore drops the index record', !store.entries.has('session-x'))
     check('restore re-attaches the session', workspace.sessionIds.includes('session-x'), workspace.sessionIds.join(','))
