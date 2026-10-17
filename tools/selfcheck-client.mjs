@@ -75,7 +75,7 @@ const { requestDelete, closeDialog } = store
 
 check('exports apply', typeof apply === 'function')
 // The Session Controller owns the writable list; archive preferences are independent.
-check('exports inject list', Array.isArray(inject) && inject.join(',') === 'slots,locale,sessions', JSON.stringify(inject))
+check('exports inject list', Array.isArray(inject) && inject.join(',') === 'slots,locale', JSON.stringify(inject))
 check('exports the confirmation store', store !== undefined && typeof store.subscribe === 'function' && typeof store.requestDelete === 'function' && typeof store.closeDialog === 'function')
 
 // --- capture the slot registrations ---------------------------------------
@@ -123,8 +123,12 @@ const fakeSessions = {
 }
 // Prevent apply's background probe from contacting an actual Harness server.
 globalThis.fetch = async () => ({ ok: false, status: 404, json: async () => ({}) })
+// Version resilience: the two contracts this half registers through. The
+// session-list owner is bound late, so a renamed or later service cannot block
+// loading.
 const fakeCtx = {
   slots: fakeSlots, locale: fakeLocale, effect: (fn) => fn(),
+  inject: (names, callback) => { names.forEach((n) => injectedNames.push(`inject:${n}`)); callback(fakeCtx) },
   get: (name) => { if (name === 'sessions') return fakeSessions; throw new Error(`Unexpected service: ${name}`) }
 }
 apply(fakeCtx)
@@ -405,7 +409,16 @@ check('client requires react through the module table', /const React = require\(
 // `window.confirm` is a synchronous modal: it blocks the renderer for its whole
 // lifetime and leaves the page unable to take pointer input afterwards.
 check('no synchronous window.confirm anywhere', !/window\.confirm\(/.test(source))
-check('injects only the actual session list owner', inject.includes('sessions') && !inject.includes('uiWorkspace') && !inject.includes('workspaces'))
+check('injects only the stable registration contracts', inject.join(',') === 'slots,locale', JSON.stringify(inject))
+// Version resilience: the list owner is bound through deferred injection when
+// the host offers it, with a retry path for hosts that do not.
+check('binds the session list owner late', /ctx\.inject\('sessions'/.test(source) || /ctx\.inject\(\['sessions'\]/.test(source))
+check('retries the session list owner without deferred injection', /retrySessions/.test(source))
+// The fallback must attach the RESOLVED service, and must free the subscription
+// when the plugin unloads.
+check('the fallback attaches the resolved service, not the promise',
+  /retrySessions\(\)\.then\(\(sessions\) => \{[\s\S]*?attachSessionFilter\(sessions\)/.test(source))
+check('the fallback disposer releases the subscription', /return \(\) => dispose\(\)/.test(source))
 check('subscribes to session list changes', /list\.subscribe\(filterDeletedSessions\)/.test(source))
 check('trash row actions await the session baseline', /async \(action\)[\s\S]*?await refreshSessionList\(\)/.test(source))
 check('empty awaits the session baseline', /callTrash\('empty'\)[\s\S]*?await refreshSessionList\(\)/.test(source))

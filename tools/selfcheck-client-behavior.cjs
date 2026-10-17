@@ -39,7 +39,7 @@ const sessions = {
   projectList: baseline
 }
 plugin.test.setContext({ get: name => { assert.equal(name, 'sessions'); return sessions } })
-const off = plugin.test.attachSessionFilter()
+const off = plugin.test.attachSessionFilter(sessions)
 plugin.test.hideSessions(['deleted'])
 assert.equal(state.ids.join(','), 'keep')
 assert.equal(state.byId.deleted, undefined)
@@ -50,7 +50,7 @@ baseline()
 assert.equal(state.ids.join(','), 'keep', 'purged tombstones survive empty trash')
 plugin.test.acceptTrashList({ hiddenSessionIds: [], entries: [] })
 ;(async () => {
-  await plugin.store.refreshSessionList()
+  await plugin.store.refreshSessionList(sessions)
   assert.equal(refreshes, 1)
   assert.equal(state.ids.join(','), 'keep,deleted', 'restored rows reappear')
   let request

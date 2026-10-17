@@ -2,7 +2,15 @@
 
 English | [简体中文](README.md)
 
-Adds **Delete Session** to DSH's sidebar session menu and provides a recoverable recycle bin. Plugin **0.2.1** targets **DSH runtime 0.2.1-rc.1** (checked against the packages shipped with Desktop 44.7.0) and requires **Node.js >= 20**.
+Adds **Delete Session** to DSH's sidebar session menu and provides a recoverable recycle bin. Plugin **0.2.2**, requires **Node.js >= 20**.
+
+## Version compatibility
+
+- **Not locked to a DSH release**: the plugin declares no hard kernel service dependency and no version range on kernel packages, so a DSH upgrade does not require a plugin update.
+- Services are **bound late by name at runtime**: the plugin activates as soon as they appear, so a changed load order or a renamed package in a later release still starts.
+- The only declared dependency is the framework itself (`@deepseek-ai/cordis ~4.0.5`), which DSH supplies; nothing extra to install.
+- Verified here against DSH runtime `0.2.1-rc.1` (Desktop 44.7.0) and the `0.2.0-rc.2` calling conventions.
+- If a future release changes a specific service method the plugin calls, the affected feature degrades instead of the plugin's boot, and only that call needs updating.
 
 ## Features and deletion behavior
 

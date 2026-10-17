@@ -1,6 +1,6 @@
 {
   "name": "dsh_session_recyclebin",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "DSH 会话回收站：删除、恢复、彻底删除与定时清理。Session recycle bin for DSH with restore, permanent deletion and automatic retention.",
   "keywords": ["dsh", "dsh-plugin", "session", "recycle-bin", "trash"],
   "type": "module",
@@ -31,21 +31,14 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "test": "node tools/selfcheck-compat.mjs && node tools/selfcheck-title.mjs && node tools/selfcheck-client.mjs && node tools/selfcheck-client-behavior.cjs && node tools/selfcheck-trash-routes.mjs"
+    "test": "node tools/selfcheck-compat.mjs && node tools/selfcheck-title.mjs && node tools/selfcheck-client.mjs && node tools/selfcheck-client-behavior.cjs && node tools/selfcheck-client-fallback.cjs && node tools/selfcheck-trash-routes.mjs"
   },
   "engines": {
     "node": ">=20",
-    "dsh": "0.2.1-rc.1"
+    "dsh": ">=0.2.0"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "~4.0.5",
-    "@deepseek-ai/dsh-client-locale": "0.2.1-rc.1",
-    "@deepseek-ai/dsh-client-ui-renderer": "0.2.1-rc.1",
-    "@deepseek-ai/dsh-api-session-controller": "0.2.1-rc.1",
-    "@deepseek-ai/dsh-host-webserver": "0.2.1-rc.1",
-    "@deepseek-ai/dsh-session-persistence": "0.2.1-rc.1",
-    "@deepseek-ai/dsh-session-query": "0.2.1-rc.1",
-    "@deepseek-ai/dsh-workspace": "0.2.1-rc.1"
+    "@deepseek-ai/cordis": "~4.0.5"
   },
   "license": "MIT",
   "dsh": {
@@ -54,11 +47,6 @@
       "patch": "./cordis.patch.yml"
     },
     "client": {
-      "inject": [
-        "@deepseek-ai/dsh-client-locale",
-        "@deepseek-ai/dsh-client-ui-renderer",
-        "@deepseek-ai/dsh-api-session-controller"
-      ],
       "platform": "web",
       "immediately": true
     }
